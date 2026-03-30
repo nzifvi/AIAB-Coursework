@@ -59,7 +59,7 @@ class RobotController:
     def __init__(self, nn: NeuralNetwork.NeuralNetwork, basePosition=[0, 0, 0], baseOrientation=[0, 0, 0, 1],
                  maxTorque: float = 5.0, ):
         self.robot = pybullet.loadURDF(
-            r"C:\Users\benja\Desktop\AIAB Coursework\TrainingSim\LeggedRobotsForBullet\quadrupedal\urdf\quadrupedal.urdf",
+            r"..\TrainingSim\LeggedRobotsForBullet\quadrupedal\urdf\quadrupedal.urdf",
             basePosition=basePosition,
             baseOrientation=baseOrientation,
             useFixedBase=False

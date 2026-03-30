@@ -25,7 +25,7 @@ class NeuralNetwork:
 
 
     def loadWeights(self):
-        direcPath = "C:/Users/benja/Desktop/AIAB Coursework/Data/Generations/Generation" + str(self.generationNo) + "/NeuralNetworks/Genotype" + str(self.genotypeID) + "/Weights"
+        direcPath = "../Data/Generations/Generation" + str(self.generationNo) + "/NeuralNetworks/Genotype" + str(self.genotypeID) + "/Weights"
 
         if os.path.exists(direcPath):
             self.weights = torch.load(os.path.join(direcPath, "weights.pt"))
@@ -34,7 +34,7 @@ class NeuralNetwork:
 
 
     def loadBiases(self):
-        direcPath = "C:/Users/benja/Desktop/AIAB Coursework/Data/Generations/Generation" + str(self.generationNo) + "/NeuralNetworks/Genotype" + str(self.genotypeID) + "/Biases"
+        direcPath = "../Data/Generations/Generation" + str(self.generationNo) + "/NeuralNetworks/Genotype" + str(self.genotypeID) + "/Biases"
 
         if os.path.exists(direcPath):
             self.biases = torch.load(os.path.join(direcPath, "biases.pt"))

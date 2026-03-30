@@ -3,7 +3,7 @@ import os
 import NeuralNetwork
 
 def watch(generationNo, genotypeID, duration=100.0):
-    genPath = f"C:/Users/benja/Desktop/AIAB Coursework/Data/Generations/Generation{generationNo}"
+    genPath = f"../Data/Generations/Generation{generationNo}"
     if not os.path.exists(genPath):
         return
     else:

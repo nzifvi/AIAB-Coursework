@@ -97,20 +97,20 @@ class GenerationController:
 
     def _readRecentCheckpoint(self) -> int:
         try:
-            with open("C:/Users/benja/Desktop/AIAB Coursework/Data/Generations/GenerationCount.txt", "r") as f:
+            with open("../Data/Generations/GenerationCount.txt", "r") as f:
                 return int(f.readline())
         except Exception as e:
             raise ValueError("Cannot load GenerationCount.txt") from e
 
     def _writeRecentCheckpoint(self, newCheckpoint ) -> None:
         try:
-            with open(r"C:\Users\benja\Desktop\AIAB Coursework\Data\Generations\GenerationCount.txt", "w") as f:
+            with open(r"..\Data\Generations\GenerationCount.txt", "w") as f:
                 f.write(str(newCheckpoint))
         except Exception as e:
             raise ValueError("Cannot write GenerationCount.txt") from e
 
     def _readPopulationSize(self) -> int:
-        filePath = f"C:/Users/benja/Desktop/AIAB Coursework/Data/Generations/Generation{self.generationNo}/PopulationCount.txt"
+        filePath = f"../Data/Generations/Generation{self.generationNo}/PopulationCount.txt"
         try:
             with open(filePath, "r") as f:
                 return int(f.read())
@@ -136,7 +136,7 @@ class GenerationController:
         self._saveNeuralNetworks(allWeights, allBiases)
 
     def _saveNeuralNetworks(self, weights, biases) -> None:
-        generationDirectoryPath = "C:/Users/benja/Desktop/AIAB Coursework/Data/Generations/Generation" + str(
+        generationDirectoryPath = "../Data/Generations/Generation" + str(
             self.generationNo)
         try:
             for i in range(self.populationSize):
@@ -189,7 +189,7 @@ class GenerationController:
 
     def _createGenerationDirectory(self) -> None:
         try:
-            newGenerationDirectoryPath = "C:/Users/benja/Desktop/AIAB Coursework/Data/Generations/Generation" + str(self.generationNo)
+            newGenerationDirectoryPath = "./Data/Generations/Generation" + str(self.generationNo)
             os.makedirs(newGenerationDirectoryPath, exist_ok = True)
             os.makedirs(newGenerationDirectoryPath + "/TelemetryData", exist_ok = True)
             os.makedirs(newGenerationDirectoryPath + "/NeuralNetworks", exist_ok = True)

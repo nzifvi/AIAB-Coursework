@@ -1,3 +1,5 @@
+import multiprocessing
+
 import Evolver
 import Simulator
 
@@ -15,7 +17,7 @@ import functools
 import FitnessFunctions
 
 RETRIAL_AMOUNT = 4
-WORKER_COUNT   = 10
+WORKER_COUNT   = multiprocessing.cpu_count() - 2
 
 def evaluateBatch(args):
     genotypeID, nn = args
@@ -23,7 +25,7 @@ def evaluateBatch(args):
     with Simulator.SupressOutput():
         sim = Simulator.Simulator(
             simDuration = 10.0,
-            gui = False
+            gui         = False
         )
         try:
             for i in range(0, RETRIAL_AMOUNT):

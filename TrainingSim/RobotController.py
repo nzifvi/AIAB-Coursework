@@ -244,7 +244,11 @@ class RobotController:
                 "contacts": contacts,
                 "jointPositions": [state[0] for state in jointStates],
                 "jointVelocities": [state[1] for state in jointStates],
-                "totalEffort": sum(abs(t) for t in self.lastTorques.values()) if self.lastTorques else 0.0
+                "totalEffort": sum(abs(t) for t in self.lastTorques.values()) if self.lastTorques else 0.0,
+                "foot_rf" : pybullet.getLinkState(self.robot, self.linkNames["rf_lower_link"])[0],
+                "foot_lf" : pybullet.getLinkState(self.robot, self.linkNames["lf_lower_link"])[0],
+                "foot_rh" : pybullet.getLinkState(self.robot, self.linkNames["rh_lower_link"])[0],
+                "foot_lh" : pybullet.getLinkState(self.robot, self.linkNames["lh_lower_link"])[0]
             }
         )
 

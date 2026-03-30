@@ -26,6 +26,6 @@ def watch(generationNo, genotypeID, duration=10.0):
             sim.disconnect()
 
 if __name__ == "__main__":
-    targetGeneration = 210
-    for i in range(0, 32):
+    targetGeneration = 250
+    for i in range(0, 64):
         watch(targetGeneration, i)

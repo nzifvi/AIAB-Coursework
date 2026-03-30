@@ -1,4 +1,3 @@
-
 import matplotlib
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
@@ -6,7 +5,7 @@ from GenerationController import GenerationController
 
 if __name__ == "__main__":
     runForNGenerations      = 100
-    popSize                 = 32
+    popSize                 = 64
 
     generationController = GenerationController(
         popSize,

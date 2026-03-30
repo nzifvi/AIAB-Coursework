@@ -15,7 +15,7 @@ from concurrent.futures import ProcessPoolExecutor
 import FitnessFunctions
 
 RETRIAL_AMOUNT = 8
-WORKER_COUNT   = multiprocessing.cpu_count() - 2
+WORKER_COUNT   = 22
 
 def evaluateBatch(args):
     genotypeID, nn = args
@@ -63,7 +63,7 @@ class GenerationController:
 
         self.evolver = Evolver.Evolver(
             tournamentSize = 5,
-            mutationRate = 0.1,
+            mutationRate = 0.25,
             sigma = 0.1
         )
         # gen 40: mutation rate boosted from 0.15 to 0.2. sigma boosted from 0.05 to 0.25

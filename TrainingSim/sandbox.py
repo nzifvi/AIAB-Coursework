@@ -5,6 +5,9 @@ import torch
 from Simulator import Simulator
 from RobotController import RobotController
 from NeuralNetwork import NeuralNetwork
+import multiprocessing
+import FitnessFunctions
+import matplotlib.pyplot as plt
 
 def runPDAutotune():
     sim = Simulator(
@@ -51,5 +54,38 @@ def runPDAutotune():
     print(f"optimal kp: {bestParams[0]} | optimal kd: {bestParams[1]}")
     sim.disconnect()
 
+def plotGenerationalFitness():
+    generationCount = 215
+    popCount = 32
+
+    avgFitness = []
+
+    sim = Simulator(simDuration=10.0, gui=False)
+    i = 0
+    while i <= generationCount:
+        if i >= 210:
+            popCount = 64
+        sumFitness = 0.0
+        for j in range(0, popCount):
+            telemetry = sim.runSimulation(
+                NeuralNetwork(
+                    generationNo = i,
+                    genotypeID = j
+                )
+            )
+            sumFitness += FitnessFunctions.calculateBalanceFitness(
+                telemetryDF = telemetry,
+                timeStep = sim.timeStep
+            )
+        avgFitness.append(
+            sumFitness / popCount
+        )
+        i += 5
+    plt.plot(avgFitness)
+    plt.show()
+
+
+
+
 if __name__ == "__main__":
-    runPDAutotune()
+    plotGenerationalFitness()

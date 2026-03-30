@@ -6,17 +6,15 @@ import Simulator
 import os
 import torch
 torch.set_num_threads(1)
-import pandas
 import NeuralNetwork
 
 from tqdm import tqdm
 
 from concurrent.futures import ProcessPoolExecutor
-import functools
 
 import FitnessFunctions
 
-RETRIAL_AMOUNT = 4
+RETRIAL_AMOUNT = 8
 WORKER_COUNT   = multiprocessing.cpu_count() - 2
 
 def evaluateBatch(args):
@@ -104,7 +102,7 @@ class GenerationController:
         except Exception as e:
             raise ValueError("Cannot load GenerationCount.txt") from e
 
-    def _writeRecentCheckpoint(self, newCheckpoint ) -> None:
+    def _writeRecentCheckpoint(self, newCheckpoint) -> None:
         try:
             with open(r"..\Data\Generations\GenerationCount.txt", "w") as f:
                 f.write(str(newCheckpoint))
@@ -191,13 +189,13 @@ class GenerationController:
 
     def _createGenerationDirectory(self) -> None:
         try:
-            newGenerationDirectoryPath = "./Data/Generations/Generation" + str(self.generationNo)
+            newGenerationDirectoryPath = "../Data/Generations/Generation" + str(self.generationNo)
             os.makedirs(newGenerationDirectoryPath, exist_ok = True)
             os.makedirs(newGenerationDirectoryPath + "/TelemetryData", exist_ok = True)
             os.makedirs(newGenerationDirectoryPath + "/NeuralNetworks", exist_ok = True)
 
             for i in range(self.populationSize):
-                os.makedirs(newGenerationDirectoryPath + "/TelemetryData/" + "Genotype" +str(i), exist_ok = True)
+                os.makedirs(newGenerationDirectoryPath + "/TelemetryData/" + "Genotype" + str(i), exist_ok = True)
 
             for i in range(self.populationSize):
                 os.makedirs(newGenerationDirectoryPath + "/NeuralNetworks/" + "Genotype" + str(i), exist_ok = True)

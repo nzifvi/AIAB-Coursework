@@ -5,6 +5,7 @@ import torch
 import NeuralNetwork
 import tkinter as tk
 from tkinter import ttk
+import time
 
 LEARNING_BALANCE = True
 LEARNING_WALK    = False
@@ -168,7 +169,7 @@ class RobotController:
             dtype = torch.float32
         )
 
-    def driveMotors(self, torqueScale=1.0, kp = 100.0, kd = 10.0, printTorques:bool = False) -> None:
+    def driveMotors(self, torqueScale=1.0, kp = 150.0, kd = 10.0, printTorques:bool = False) -> None:
         stateTensor = self.getRobotState()
         nnOutput = self.robotNN.inference(stateTensor).squeeze(0)
 
@@ -251,3 +252,54 @@ class RobotController:
         return pandas.DataFrame(
             self.telemetryLog
         )
+
+    def tunePDController(self, kp, kd, targetAngle = 0.2, duration = 200, showGUI = False):
+        totalJitter = 0.0
+        heights = []
+        numJoints = len(self.jointIDs)
+        finalHeight = 0.0
+
+        for i in range(duration):
+            targetPositions = torch.full(
+                (numJoints,),
+                targetAngle
+            )
+
+            jointStates = pybullet.getJointStates(
+                self.robot,
+                self.jointIDs
+            )
+            currentPosition = torch.tensor(
+                [state[0] for state in jointStates]
+            )
+            currentVelocity = torch.tensor(
+                [state[1] for state in jointStates]
+            )
+
+            pdTorques = kp * (targetPositions - currentPosition) - kd * currentVelocity
+            finalTorques = torch.tanh(pdTorques / self.maxTorque)
+
+            for j, jointIndex in enumerate(self.jointIDs):
+                pybullet.setJointMotorControl2(
+                    self.robot,
+                    jointIndex,
+                    pybullet.TORQUE_CONTROL,
+                    force = finalTorques[j].item()
+                )
+
+            pybullet.stepSimulation()
+
+            if showGUI:
+                robotPos, _ = pybullet.getBasePositionAndOrientation(self.robot)
+                pybullet.resetDebugVisualizerCamera(2.0, 50, -30, robotPos)
+                time.sleep(self.timeStep)
+
+            if i > 100:
+                totalJitter += sum(
+                    [abs(state[1]) for state in jointStates]
+                )
+                if i == duration - 1:
+                    pos, _ = pybullet.getBasePositionAndOrientation(self.robot)
+                    finalHeight = pos[2]
+
+        return (totalJitter / (duration - 100)), finalHeight

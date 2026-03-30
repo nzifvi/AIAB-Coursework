@@ -1,8 +1,9 @@
 import Simulator
 import os
 import NeuralNetwork
+import FitnessFunctions
 
-def watch(generationNo, genotypeID, duration=100.0):
+def watch(generationNo, genotypeID, duration=10.0):
     genPath = f"../Data/Generations/Generation{generationNo}"
     if not os.path.exists(genPath):
         return
@@ -16,9 +17,15 @@ def watch(generationNo, genotypeID, duration=100.0):
         except Exception as e:
             print(e)
         finally:
+            print(
+                FitnessFunctions.calculateBalanceFitness(
+                    telemetryDF = telemetry,
+                    timeStep = sim.timeStep
+                )
+            )
             sim.disconnect()
 
 if __name__ == "__main__":
-    targetGeneration = 75
+    targetGeneration = 140
     for i in range(0, 32):
         watch(targetGeneration, i)
